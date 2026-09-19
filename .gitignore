@@ -1,0 +1,12 @@
+# build outputs — regenerate with tools/extract_shots.py + tools/build_video.py
+build/
+web/ui/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# os
+Thumbs.db
+.DS_Store

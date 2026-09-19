@@ -1,0 +1,446 @@
+<title>جولة سَنَد ٢</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@400;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#EDF1EE;--paper:#FFFFFF;--ink:#0B221C;--ink-2:#37514A;--muted:#6E837B;
+  --line:#D6DFD9;--line-soft:#E6EDE8;--deep:#0C2B23;--accent:#0E7A5F;--accent-soft:#D9EDE5;
+  --amber:#B9791A;--amber-soft:#F7ECD5;--red:#B84034;--red-soft:#F7DFDB;
+  --scrim-1:rgba(6,22,18,.92);--scrim-2:rgba(6,22,18,.0);--on-scrim:#F0F6F2;--on-scrim-2:#B9CEC5;
+  --shadow:0 1px 2px rgba(11,34,28,.06), 0 8px 26px rgba(11,34,28,.07);
+  --shadow-lift:0 2px 6px rgba(11,34,28,.08), 0 22px 50px rgba(11,34,28,.13);
+  --display:"Reem Kufi","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#071713;--paper:#0E241E;--ink:#E6EFE9;--ink-2:#B4C7BF;--muted:#88A196;
+    --line:#1E3A32;--line-soft:#173029;--deep:#061310;--accent:#3FBF97;--accent-soft:#12382D;
+    --amber:#E0A94A;--amber-soft:#3A2D14;--red:#E8796A;--red-soft:#3B1D18;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 26px rgba(0,0,0,.35);
+    --shadow-lift:0 2px 6px rgba(0,0,0,.35), 0 22px 50px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#071713;--paper:#0E241E;--ink:#E6EFE9;--ink-2:#B4C7BF;--muted:#88A196;
+  --line:#1E3A32;--line-soft:#173029;--deep:#061310;--accent:#3FBF97;--accent-soft:#12382D;
+  --amber:#E0A94A;--amber-soft:#3A2D14;--red:#E8796A;--red-soft:#3B1D18;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 26px rgba(0,0,0,.35);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.35), 0 22px 50px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);direction:rtl;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:18px 44px}
+.masthead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.masthead h1{font-family:var(--display);font-size:23px;font-weight:600;margin:0}
+.masthead .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);align-self:center}
+.masthead p{margin:0;color:var(--muted);font-size:13.5px}
+
+.screen{position:relative;background:var(--deep);border-radius:14px;padding:10px;box-shadow:var(--shadow-lift)}
+.stage{position:relative;width:100%;aspect-ratio:16/9;container-type:inline-size;overflow:hidden;border-radius:7px;background:#06160F}
+.sc{position:absolute;inset:0;opacity:0;visibility:hidden;font-size:1.95cqw}
+.sc.is-active{opacity:1;visibility:visible;z-index:3}
+
+/* shot scenes */
+.shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;
+  transform-origin:var(--org,50% 30%);max-width:100%}
+.scrim{position:absolute;inset:0;background:linear-gradient(to top,var(--scrim-1) 0%,rgba(6,22,18,.72) 26%,var(--scrim-2) 54%)}
+.vig{position:absolute;inset:0;box-shadow:inset 0 0 12cqw rgba(4,14,11,.5);pointer-events:none}
+.cap{position:absolute;right:4cqw;left:4cqw;bottom:3.4cqw;display:flex;flex-direction:column;gap:.9cqw;color:var(--on-scrim)}
+.cap .eyebrow{font-size:1.2cqw;letter-spacing:.18em;color:#6FD9B6;font-weight:600}
+.cap h2{font-family:var(--display);font-size:3.5cqw;margin:0;font-weight:600;line-height:1.2;text-wrap:balance}
+.cap p{margin:0;font-size:1.72cqw;line-height:1.6;color:var(--on-scrim-2);max-width:74cqw}
+.cap .tags{display:flex;gap:.8cqw;flex-wrap:wrap;margin-top:.3cqw}
+.tag{font-size:1.2cqw;padding:.42cqw 1cqw;border-radius:99px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.18);color:#DCEBE4}
+.tag.on{background:rgba(63,191,151,.18);border-color:rgba(63,191,151,.45);color:#89E4C3}
+.tag.warn{background:rgba(224,169,74,.16);border-color:rgba(224,169,74,.42);color:#EFC684}
+.tag.no{background:rgba(232,121,106,.16);border-color:rgba(232,121,106,.42);color:#F0A99E}
+.realchip{position:absolute;top:3cqw;left:3.4cqw;font-size:1.15cqw;color:#CFE3DA;background:rgba(6,22,18,.55);
+  border:1px solid rgba(255,255,255,.16);border-radius:99px;padding:.4cqw 1cqw;display:flex;align-items:center;gap:.5cqw;backdrop-filter:blur(4px)}
+.realchip i{width:.55cqw;height:.55cqw;border-radius:50%;background:#6FD9B6;display:block}
+
+/* text-only scenes */
+.pad{position:absolute;inset:0;padding:6cqw;display:flex;flex-direction:column;justify-content:center;gap:2cqw;background:var(--paper);color:var(--ink)}
+.pad .eyebrow{font-size:1.25cqw;letter-spacing:.18em;color:var(--accent);font-weight:600}
+.pad h1{font-family:var(--display);font-size:6.4cqw;margin:0;font-weight:600;line-height:1.14}
+.pad h2{font-family:var(--display);font-size:3.8cqw;margin:0;font-weight:600;line-height:1.2}
+.pad p{margin:0;font-size:2.05cqw;color:var(--ink-2);max-width:56cqw;line-height:1.6}
+.pad .small{font-size:1.5cqw;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6cqw}
+.cards.two{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--ground);border:1px solid var(--line);border-radius:1cqw;padding:1.6cqw 1.8cqw;display:flex;flex-direction:column;gap:.5cqw}
+.card .k{font-size:1.25cqw;color:var(--muted);letter-spacing:.06em}
+.card .v{font-size:2.1cqw;font-weight:600;line-height:1.25}
+.mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate;font-weight:600}
+.idx{position:absolute;bottom:2.4cqw;left:3.4cqw;font-family:var(--mono);font-size:1.15cqw;color:rgba(255,255,255,.55);direction:ltr;z-index:6}
+.sc.text .idx{color:var(--muted)}
+
+/* animation system */
+.anim{animation-duration:var(--dur,.72s);animation-delay:calc(var(--d,0s) + var(--off,0s));
+  animation-fill-mode:both;animation-timing-function:cubic-bezier(.2,.75,.2,1);animation-name:none}
+.sc.is-active .anim{animation-name:riseIn}
+.sc.is-active .anim.fade{animation-name:fadeIn}
+.sc.is-active .anim.pop{animation-name:popIn}
+.sc.is-active .anim.kb{animation-name:kenBurns;animation-timing-function:linear}
+.sc.is-active .anim.wipe{animation-name:wipeR}
+@keyframes riseIn{from{opacity:0;transform:translateY(1.4cqw)}}
+@keyframes fadeIn{from{opacity:0}}
+@keyframes popIn{from{opacity:0;transform:scale(.94)}}
+@keyframes wipeR{from{clip-path:inset(0 0 0 100%)}}
+@keyframes kenBurns{from{transform:scale(1.075)}}
+.stage.paused .sc.is-active .anim{animation-play-state:paused}
+@media (prefers-reduced-motion: reduce){.sc.is-active .anim{animation-name:none !important}}
+
+/* controls */
+.controls{margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--paper);
+  border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow)}
+button{font-family:var(--body);cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:38px;padding:0 12px;border-radius:9px;
+  border:1px solid var(--line);background:var(--ground);color:var(--ink);font-size:14px}
+.btn:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;min-width:46px}
+.time{font-family:var(--mono);font-size:13px;color:var(--muted);direction:ltr;min-width:86px;font-variant-numeric:tabular-nums}
+.track{flex:1 1 240px;min-width:170px;display:flex;gap:2px;height:22px;align-items:center;cursor:pointer}
+.seg{flex:var(--f,1);height:6px;border-radius:99px;background:var(--line);position:relative;overflow:hidden}
+.seg span{position:absolute;inset:0;transform-origin:right center;transform:scaleX(var(--p,0));background:var(--accent);border-radius:99px}
+.sel{height:38px;border-radius:9px;border:1px solid var(--line);background:var(--ground);color:var(--ink);font-family:var(--body);font-size:13.5px;padding:0 8px}
+.now{font-size:13.5px;color:var(--muted);flex-basis:100%}
+.now b{color:var(--ink)}
+.rail{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:8px}
+.rail h2{grid-column:1/-1;font-size:13px;letter-spacing:.14em;color:var(--muted);margin:6px 0 2px;font-weight:600}
+.jump{text-align:right;border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 11px;display:grid;gap:3px;color:var(--ink)}
+.jump:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+.jump[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.jump .t{font-size:13.5px;font-weight:600;line-height:1.35}
+.jump .m{font-size:11.5px;color:var(--muted);font-family:var(--mono);direction:ltr}
+.foot{margin-top:22px;color:var(--muted);font-size:13px;line-height:1.7;max-width:70ch}
+.foot a{color:var(--accent)}
+@media (max-width:560px){.masthead h1{font-size:19px}.btn{height:34px;min-width:34px;padding:0 9px}.time{min-width:78px;font-size:12px}}
+</style>
+
+<div class="wrap">
+  <div class="masthead">
+    <h1>جولة سَنَد ٢</h1><span class="dot"></span>
+    <p>٣٤ مشهدًا بلقطات الواجهة الفعلية · مستخرجة من دليل الواجهات الرسمي للمشروع</p>
+  </div>
+
+  <div class="screen">
+    <div class="stage" id="stage"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn primary" id="play" aria-label="تشغيل أو إيقاف">⏸</button>
+    <button class="btn" id="prev" aria-label="السابق">⏮</button>
+    <button class="btn" id="next" aria-label="التالي">⏭</button>
+    <span class="time" id="time">0:00 / 0:00</span>
+    <div class="track" id="track" role="slider" aria-label="شريط الزمن" tabindex="0" aria-valuemin="0" aria-valuenow="0" aria-valuemax="100"></div>
+    <select class="sel" id="speed" aria-label="السرعة">
+      <option value="0.75">0.75×</option><option value="1" selected>1×</option>
+      <option value="1.25">1.25×</option><option value="1.5">1.5×</option>
+    </select>
+    <button class="btn" id="restart" aria-label="إعادة">⟲</button>
+    <div class="now" id="now"></div>
+  </div>
+
+  <div class="rail" id="rail"><h2>المشاهد</h2></div>
+
+  <p class="foot">
+    اللقطات مأخوذة من <span class="mono">docs/SANAD-v2-complete-interface-guide.pdf</span> داخل مستودع المشروع، وكل الأشخاص والوثائق الظاهرة فيها اصطناعية.
+    الأرقام من <span class="mono">ml/evaluation.json</span>. النسخة الحية:
+    <a href="https://sanad-v2.songokualshareef.workers.dev" target="_blank" rel="noopener">sanad-v2.songokualshareef.workers.dev</a>
+  </p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  /* [page|null, chapter, nav, eyebrow, title, line, tags[], origin, dur] */
+  var T = [
+    [null,"البداية","الافتتاحية","جولة داخل المنتج","سَنَد ٢ — كما يظهر على الشاشة",
+      "٣٤ محطة داخل المنصة، كل واحدة بلقطة فعلية من الواجهة. الأشخاص والوثائق اصطناعية بالكامل.",
+      ["خمس وحدات","أربعة أدوار","نموذج أولي"],null,12],
+
+    ["p09","الدخول","تسجيل الدخول","الباب","حساب لكل موظف، لا حساب مشترك",
+      "الجلسة تعيش ٨ ساعات، والكوكي HttpOnly مع SameSite=Strict. تغيير الدور أو تعطيل الحساب يبطل الجلسات فورًا.",
+      ["كوكي HttpOnly","إلغاء فوري للجلسات"],"50% 40%",11],
+
+    ["p11","الدخول","مساحة العمل","نقطة البداية","أربعة أرقام تحدد عمل اليوم",
+      "الحالات في مساحتك، ما تمت مراجعته، ما ينتظر المراجعة، وما نسخته ناقصة. البحث بالاسم أو الهوية أو رقم سجل السفر.",
+      ["فرز بالتأشيرة","بحث بالهوية"],"55% 35%",11],
+
+    ["p13","الوثيقة","إنشاء حالة","الوحدة ١ · سَنَد","ملف الوافد يبدأ بمرجع دخول",
+      "الحقول الأساسية أولًا، ثم تُبنى عليها الوثائق والحركات والمراجعات.",
+      ["حالة جديدة"],"50% 40%",10],
+
+    ["p15","الوثيقة","نسخة الجواز ناقصة","المشكلة على الشاشة","حالة تصل دون أصل الجواز",
+      "هنا تتوقف المعاملة عادة: البيانات النصية موجودة، لكن المستند الذي تطلبه الجهة القنصلية غير موجود.",
+      ["نسخة الجواز ناقصة"],"50% 40%",12],
+
+    ["p16","الوثيقة","إرفاق النسخة وقراءتها","قراءة الصور","خمس خانات تُقرأ في المتصفح",
+      "الاسم ورقم الوثيقة والجنسية المكتوبة والميلاد والانتهاء. PDF والعربية و MRZ وحده تُراجع يدويًا.",
+      ["Tesseract محلي","مراجعة الموظف مطلوبة"],"50% 45%",13],
+
+    ["p19","الوثيقة","الوثيقة ومصدرها","الحفظ","النسخة محفوظة ومعها من أرفقها ومتى",
+      "بصمة SHA-256 تكشف تبدّل البايتات — لا أصالة الجواز ولا هوية حامله.",
+      ["مصدر معلوم","بصمة ملف"],"50% 40%",11],
+
+    ["p20","الوثيقة","مراجعة الاختلاف","قبل الاعتماد","قارن خانات النسخة بسجل الدخول",
+      "الاختلاف مؤشر يستدعي مراجعة بشرية، وقد يكون له سبب مشروع. ليس إثبات تزوير.",
+      ["مؤشر لا حكم"],"50% 40%",12],
+
+    ["p22","الثقة","سبب التعديل","الوحدة ٢ · موثوقية السجلات","لا حفظ بلا سبب مكتوب",
+      "هوية الموظف تُؤخذ من الجلسة، والسبب يُحفظ مع الخانة قبل وبعد في نفس المعاملة.",
+      ["سبب إلزامي","قبل/بعد"],"50% 45%",11],
+
+    ["p23","الوثيقة","المساعد والمصادر","المساعد","إجابة مسندة إلى الملف",
+      "بحث دلالي محلي يربط كل إجابة بمصدرها. Groq خيار خارجي محجوب افتراضيًا ويفتحه المسؤول.",
+      ["مصادر بجانب الإجابة","رجوع إلى السجل عند التعطل"],"50% 40%",12],
+
+    ["p25","الوثيقة","معلومات المسافر","الخانات","بيانات المسافر والجواز والتأشيرة",
+      "مجموعات حقول واضحة، وكل تعديل عليها يمر بنفس مسار السبب والتوثيق.",
+      ["مجموعات حقول"],"50% 40%",10],
+
+    ["p28","الوثيقة","تفاصيل التأشيرة","علامتا + / −","ما يدعم الملف وما يضعفه",
+      "علامة موجب وسالب على تفاصيل التأشيرة تجعل قراءة الملف أسرع دون إخفاء التفاصيل.",
+      ["قراءة سريعة"],"50% 40%",10],
+
+    ["p32","الوثيقة","الدخول والخروج","الحركات","ربط النسخة بحركة السفر",
+      "جواز الدخول يُربط بالوثيقة البديلة عند الخروج، وتظهر الحركتان في الحزمة المطبوعة.",
+      ["ربط وثيقتين"],"50% 40%",11],
+
+    ["p35","الوثيقة","الجواز والوثيقة البديلة","في الملف نفسه","مستندان لحالة واحدة",
+      "لا مجلدات جانبية ولا نسخ متفرقة: المستندات كلها داخل ملف الحالة بمصادرها.",
+      ["مصدر واحد للحقيقة"],"50% 40%",10],
+
+    ["p36","الوثيقة","الأوامر ومستنداتها","المراجع","حفظ مرجع الأمر ولقطته",
+      "يحفظ النظام المرجع والمصدر ولقطة من الجواز والوثيقة البديلة — ولا ينفذ أوامر فعلية.",
+      ["مرجع تجريبي","لا تنفيذ فعلي"],"50% 40%",11],
+
+    ["p39","الوثيقة","حزمة المراجعة","المخرج","مسودة واحدة قابلة للطباعة",
+      "الخانات والحركات والنسخة والملاحظات في حزمة ثابتة يعتمدها المشرف أو المسؤول.",
+      ["اعتماد المشرف"],"50% 40%",11],
+
+    ["p42","الوثيقة","ما قبل الوصول","محاكاة معلنة","احفظ النسخة قبل وصول الوافد",
+      "صفحة مستقلة تحفظ نسخة مبكرة، تُراجع وتُسلّم وتُستلم داخل محاكاة، ثم تُربط بملف الدخول.",
+      ["محاكاة، لا ربط فعلي"],"50% 45%",12],
+
+    ["p47","الوثيقة","التسليم والاستلام","داخل المحاكاة","خطوة التسليم موثقة كغيرها",
+      "كل انتقال في المحاكاة يترك أثرًا في السجل: من سلّم، ومن استلم، ومتى.",
+      ["أثر لكل خطوة"],"50% 45%",10],
+
+    ["p51","القرار","مرحلة المعاملة","الوحدة ٣ · التخطيط التشغيلي","لكل مرحلة مدة ومسؤول",
+      "استكمال، مراجعة، انتظار — والفصل بين ما هو داخلي وما ينتظر جهة خارجية.",
+      ["مالك لكل انتظار"],"50% 40%",11],
+
+    ["p53","الثقة","موثوقية السجلات","الوحدة ٢","سلامة السجل متحققة",
+      "فحص التوقيعات ومطابقة البيانات الحالية. الشاشة تعرض آخر ٢٠٠ تغيير، والفحص يقرأ السجل كاملًا.",
+      ["توقيعات متسلسلة","HMAC-SHA256"],"50% 35%",13],
+
+    ["p54","الثقة","قبل وبعد","تفاصيل الحدث","الخانة كما كانت وكما صارت",
+      "افتح أي حدث لترى الموظف والسبب وقيمة كل خانة قبل التعديل وبعده.",
+      ["شفافية كاملة"],"50% 45%",11],
+
+    ["p58","الوثيقة","المؤشرات","فحوص قابلة للتفسير","اختلاف الحقول، تكرار الملف، كثرة التعديلات",
+      "قواعد معلنة وليست نموذج كشف تزوير مدرب. كل مؤشر يتطلب مراجعة بشرية.",
+      ["ليست كشف تزوير"],"50% 40%",12],
+
+    ["p60","القرار","الضغط والتخطيط","أين تتعطل المعاملة","الملفات المتبقية حسب الموارد والوارد",
+      "محاكاة حسابية بمعاملات يدخلها المستخدم، وشرح مكشوف لطريقة الحساب.",
+      ["افتراضات معلنة"],"50% 40%",12],
+
+    ["p62","القرار","المحاكاة","قبل وبعد إضافة مراجع","الداخل يتسارع، والخارج لا يختفي",
+      "زيادة المراجعين تقلص المراجعة الداخلية، بينما يبقى انتظار القنصلية كما هو.",
+      ["لا وفورات مثبتة"],"50% 40%",13],
+
+    ["p63","القرار","قرار المشرف","القرار البشري","اعتماد أو رفض — مع الافتراضات",
+      "يُحفظ القرار مع لقطة الحالة وافتراضات الحساب. لا نقل موظفين ولا إجراء حكومي.",
+      ["قرار موثق"],"50% 40%",11],
+
+    ["p65","التوقع","توقع الإقبال","الوحدة ٤","اختر المطار والصالة والتاريخ",
+      "نموذج مدرب على بيانات CBP العامة، والهدف هو عدد الركاب غير الأمريكيين في الساعة.",
+      ["بيانات أمريكية عامة","CC BY 4.0"],"50% 40%",12],
+
+    ["p67","التوقع","نتيجة ٢٤ ساعة","المخرج","منحنى توقع مع نطاق خطأ",
+      "أفق ٢٤ ساعة، ولا يعتمد التوقع على أعداد مستقبلية. المفقود في البيانات ليس صفرًا.",
+      ["أفق ٢٤ ساعة"],"50% 40%",12],
+
+    ["p71","التوقع","محاكاة الكاونترات","الأثر التشغيلي","ماذا لو زدنا الكاونترات؟",
+      "محاكاة حسابية فوق ناتج التوقع — لا قياس ميداني ولا التزام بأداء فعلي.",
+      ["حسابية بحتة"],"50% 40%",11],
+
+    ["p73","التوقع","اختبار النموذج","الأرقام الحقيقية","86.92 مقابل 93.97 على 6,773 ساعة",
+      "تحسّن 7.50٪ في متوسط الخطأ مقابل مرجع بسيط — وليست «نسبة دقة». تغطية نطاق الخطأ 81.4٪.",
+      ["MAE أقل = أفضل","اختبار زمني مستقل"],"50% 40%",14],
+
+    ["p76","الإدارة","الإحصاءات والمتابعة","اللوحة","توزيع الملفات والحركات",
+      "أعداد الملفات حسب نوع التأشيرة وحالة النسخة، مع تصدير CSV.",
+      ["تصدير CSV"],"50% 40%",10],
+
+    ["p78","الإدارة","مكتبة الوثائق","الأرشيف","كل النسخ في مكان واحد",
+      "استعراض الوثائق المرتبطة بالحالات مع مصادرها وحالتها.",
+      ["ربط بالحالات"],"50% 40%",10],
+
+    ["p81","الحماية","الحسابات والحماية","الوحدة ٥","أدوار، جلسات، وخروج البيانات",
+      "أربعة أدوار والتحقق على الخادم. إخفاء الزر ليس حماية — الصلاحية تُفحص على واجهة البرمجة.",
+      ["٢٥ حسابًا كحد","تحكم بـ Groq"],"50% 40%",13],
+
+    ["p87","الحماية","على الجوال","الاستخدام","الواجهة نفسها على شاشة صغيرة",
+      "نفس الصلاحيات ونفس السجل، بترتيب يناسب الجوال.",
+      ["واجهة متجاوبة"],"50% 30%",10],
+
+    [null,"الخاتمة","الخاتمة","جرّبها بنفسك","الرابط وحساب العرض",
+      "sanad-v2.songokualshareef.workers.dev · الحساب viewer / viewer123 للقراءة فقط. لا ترفع أي بيانات حقيقية.",
+      ["نموذج أولي","بيانات اصطناعية"],null,12]
+  ];
+
+  var stage = document.getElementById("stage");
+  var timeEl = document.getElementById("time");
+  var trackEl = document.getElementById("track");
+  var railEl = document.getElementById("rail");
+  var nowEl = document.getElementById("now");
+  var playBtn = document.getElementById("play");
+  var speedSel = document.getElementById("speed");
+
+  function pad(n){ return (n<10?"0":"")+n; }
+  function fmt(s){ s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+":"+(s%60<10?"0":"")+(s%60); }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+  var total=0, starts=[];
+  T.forEach(function(s){ starts.push(total); total += s[8]; });
+
+  var nodes = T.map(function(s,i){
+    var el = document.createElement("div");
+    var tags = (s[6]||[]).map(function(t,k){
+      var cls = k===0 ? "tag on" : "tag";
+      return '<span class="'+cls+' anim pop" style="--d:'+(1.05+k*0.12).toFixed(2)+'s">'+esc(t)+'</span>';
+    }).join("");
+    if (s[0]){
+      el.className = "sc shot-sc";
+      el.innerHTML =
+        '<img class="shot anim kb" src="ui/'+s[0]+'.webp" alt="لقطة من واجهة سَنَد ٢" style="--org:'+(s[7]||"50% 35%")+';--dur:'+s[8]+'s" loading="eager">'+
+        '<div class="scrim anim fade" style="--d:.15s"></div><div class="vig"></div>'+
+        '<div class="realchip anim fade" style="--d:.5s"><i></i> لقطة فعلية · بيانات اصطناعية</div>'+
+        '<div class="cap">'+
+          '<div class="eyebrow anim" style="--d:.3s">'+esc(s[3])+'</div>'+
+          '<h2 class="anim" style="--d:.45s">'+esc(s[4])+'</h2>'+
+          '<p class="anim" style="--d:.65s">'+esc(s[5])+'</p>'+
+          '<div class="tags">'+tags+'</div>'+
+        '</div>'+
+        '<div class="idx">'+pad(i+1)+' / '+pad(T.length)+'</div>';
+    } else {
+      el.className = "sc text";
+      var isEnd = i === T.length-1;
+      el.innerHTML =
+        '<div class="pad">'+
+          '<div class="eyebrow anim" style="--d:.1s">'+esc(s[3])+'</div>'+
+          (isEnd
+            ? '<h2 class="anim" style="--d:.25s">'+esc(s[4])+'</h2>'
+            : '<h1 class="anim" style="--d:.25s">'+esc(s[4])+'</h1>')+
+          '<div class="anim wipe" style="--d:.55s;--dur:.9s;height:.3cqw;width:18cqw;background:var(--accent);border-radius:99px"></div>'+
+          '<p class="anim" style="--d:.75s">'+esc(s[5])+'</p>'+
+          (isEnd
+            ? '<div class="cards two anim" style="--d:1s;max-width:60cqw">'+
+                '<div class="card"><span class="k">الرابط</span><span class="v mono" style="font-size:1.5cqw">sanad-v2.songokualshareef.workers.dev</span></div>'+
+                '<div class="card"><span class="k">حساب العرض</span><span class="v mono" style="font-size:1.8cqw">viewer / viewer123</span></div>'+
+              '</div>'
+            : '<div class="tags" style="display:flex;gap:.9cqw;flex-wrap:wrap">'+
+                (s[6]||[]).map(function(t,k){ return '<span class="card anim pop" style="--d:'+(1+k*0.14).toFixed(2)+'s;padding:.7cqw 1.3cqw"><span class="v" style="font-size:1.6cqw">'+esc(t)+'</span></span>'; }).join("")+
+              '</div>')+
+        '</div>'+
+        '<div class="idx">'+pad(i+1)+' / '+pad(T.length)+'</div>';
+    }
+    stage.appendChild(el);
+    return el;
+  });
+
+  var segs = T.map(function(s){
+    var g = document.createElement("div");
+    g.className = "seg"; g.style.setProperty("--f", String(s[8]));
+    g.innerHTML = "<span></span>"; trackEl.appendChild(g); return g;
+  });
+
+  var jumps=[], lastCh=null;
+  T.forEach(function(s,i){
+    if (s[1] !== lastCh){
+      var h=document.createElement("h2"); h.textContent=s[1]; railEl.appendChild(h); lastCh=s[1];
+    }
+    var b=document.createElement("button");
+    b.className="jump"; b.type="button";
+    b.innerHTML='<span class="t">'+esc(s[2])+'</span><span class="m">'+pad(i+1)+' · '+fmt(starts[i])+'</span>';
+    b.addEventListener("click", function(){ seek(starts[i]+0.001); if(!playing) setPlaying(true); });
+    railEl.appendChild(b); jumps.push(b);
+  });
+
+  var t=0, cur=-1, playing=true, speed=1, last=0;
+
+  function sceneAt(time){ for(var i=T.length-1;i>=0;i--) if(time>=starts[i]) return i; return 0; }
+  function activate(i, offset){
+    if (cur>=0){ nodes[cur].classList.remove("is-active"); nodes[cur].setAttribute("aria-hidden","true"); }
+    cur=i;
+    var el=nodes[i];
+    el.style.setProperty("--off","-"+(offset||0).toFixed(2)+"s");
+    void el.offsetWidth;
+    el.classList.add("is-active"); el.setAttribute("aria-hidden","false");
+    nowEl.innerHTML="<b>"+esc(T[i][2])+"</b> · "+esc(T[i][1]);
+    jumps.forEach(function(b,k){ b.setAttribute("aria-current", k===i?"true":"false"); });
+  }
+  function paint(){
+    var i = cur<0?0:cur, lt = t-starts[i];
+    for (var k=0;k<segs.length;k++){
+      var p = k<i?1:(k>i?0:Math.min(1, lt/T[i][8]));
+      segs[k].style.setProperty("--p", p.toFixed(3));
+    }
+    timeEl.textContent = fmt(t)+" / "+fmt(total);
+    trackEl.setAttribute("aria-valuenow", Math.round(t/total*100));
+  }
+  function seek(time){
+    t=Math.max(0,Math.min(total-0.01,time));
+    var i=sceneAt(t); activate(i, t-starts[i]); paint();
+  }
+  function setPlaying(on){
+    playing=on; stage.classList.toggle("paused",!on);
+    playBtn.textContent = on?"⏸":"▶";
+    playBtn.setAttribute("aria-label", on?"إيقاف مؤقت":"تشغيل");
+  }
+  function frame(now){
+    if(!last) last=now;
+    var dt=Math.min(.25,(now-last)/1000); last=now;
+    if (playing){
+      t += dt*speed;
+      if (t>=total){ t=total-0.01; setPlaying(false); }
+      var i=sceneAt(t); if(i!==cur) activate(i,0);
+      paint();
+    }
+    requestAnimationFrame(frame);
+  }
+
+  playBtn.addEventListener("click",function(){ setPlaying(!playing); });
+  document.getElementById("restart").addEventListener("click",function(){ seek(0); setPlaying(true); });
+  document.getElementById("prev").addEventListener("click",function(){
+    var i=cur; if (t-starts[i]<1.2 && i>0) i--; seek(starts[i]+0.001);
+  });
+  document.getElementById("next").addEventListener("click",function(){
+    if (cur<T.length-1) seek(starts[cur+1]+0.001);
+  });
+  speedSel.addEventListener("change",function(){ speed=parseFloat(speedSel.value); });
+  trackEl.addEventListener("click",function(ev){
+    var r=trackEl.getBoundingClientRect();
+    var x=ev.clientX-r.left;
+    var ratio=1-Math.max(0,Math.min(1,x/r.width));
+    seek(ratio*total);
+  });
+  document.addEventListener("keydown",function(e){
+    if (e.target && /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+    if (e.code==="Space"){ setPlaying(!playing); e.preventDefault(); }
+    else if (e.key==="ArrowLeft"){ if (cur<T.length-1) seek(starts[cur+1]+0.001); }
+    else if (e.key==="ArrowRight"){ var i=cur; if (t-starts[i]<1.2 && i>0) i--; seek(starts[i]+0.001); }
+  });
+
+  activate(0,0); paint(); setPlaying(true); requestAnimationFrame(frame);
+})();
+</script>
