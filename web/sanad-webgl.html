@@ -1,0 +1,557 @@
+<title>سَنَد ٢ ثلاثي الأبعاد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#EDF1EE;--paper:#FFFFFF;--ink:#0B221C;--ink-2:#37514A;--muted:#6E837B;
+  --line:#D6DFD9;--deep:#071A15;--accent:#0E7A5F;--accent-soft:#D9EDE5;
+  --shadow:0 1px 2px rgba(11,34,28,.06), 0 10px 30px rgba(11,34,28,.08);
+  --shadow-lift:0 3px 8px rgba(11,34,28,.10), 0 26px 60px rgba(11,34,28,.16);
+  --display:"Reem Kufi","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#06140F;--paper:#0D2019;--ink:#E6EFE9;--ink-2:#B4C7BF;--muted:#88A196;
+    --line:#1C332B;--accent:#3FBF97;--accent-soft:#12382D;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.4);
+    --shadow-lift:0 3px 8px rgba(0,0,0,.4), 0 26px 60px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#06140F;--paper:#0D2019;--ink:#E6EFE9;--ink-2:#B4C7BF;--muted:#88A196;
+  --line:#1C332B;--accent:#3FBF97;--accent-soft:#12382D;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.4);
+  --shadow-lift:0 3px 8px rgba(0,0,0,.4), 0 26px 60px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);direction:rtl;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:18px 44px}
+.masthead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.masthead h1{font-family:var(--display);font-size:23px;font-weight:600;margin:0}
+.masthead .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);align-self:center}
+.masthead p{margin:0;color:var(--muted);font-size:13.5px}
+
+.screen{position:relative;background:#04100C;border-radius:14px;padding:10px;box-shadow:var(--shadow-lift)}
+.stage{position:relative;width:100%;aspect-ratio:16/9;border-radius:7px;overflow:hidden;background:#04100C}
+.stage canvas{display:block;width:100%;height:100%}
+.badge{
+  position:absolute;right:2.2%;bottom:4%;z-index:3;color:rgba(224,238,231,.62);
+  font-size:clamp(9px,1.05vw,14px);letter-spacing:.02em;pointer-events:none;
+  text-shadow:0 1px 6px rgba(0,0,0,.5)
+}
+.badge.light{color:rgba(20,44,36,.55);text-shadow:none}
+.loading{
+  position:absolute;inset:0;display:grid;place-items:center;z-index:4;background:#04100C;color:#9FC5B6;
+  font-size:14px;letter-spacing:.06em;transition:opacity .5s ease
+}
+.loading.gone{opacity:0;pointer-events:none}
+
+.controls{
+  margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--paper);
+  border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow)
+}
+button{font-family:var(--body);cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:38px;padding:0 12px;
+  border-radius:9px;border:1px solid var(--line);background:var(--ground);color:var(--ink);font-size:14px}
+.btn:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;min-width:46px}
+.time{font-family:var(--mono);font-size:13px;color:var(--muted);direction:ltr;min-width:84px;font-variant-numeric:tabular-nums}
+.track{flex:1 1 240px;min-width:170px;display:flex;gap:2px;height:22px;align-items:center;cursor:pointer}
+.seg{flex:var(--f,1);height:6px;border-radius:99px;background:var(--line);position:relative;overflow:hidden}
+.seg span{position:absolute;inset:0;transform-origin:right center;transform:scaleX(var(--p,0));background:var(--accent);border-radius:99px}
+.now{font-size:13.5px;color:var(--muted);flex-basis:100%}
+.now b{color:var(--ink)}
+.rail{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.jump{text-align:right;border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 11px;display:grid;gap:3px;color:var(--ink)}
+.jump:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+.jump[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.jump .t{font-size:13.5px;font-weight:600;line-height:1.35}
+.jump .m{font-size:11.5px;color:var(--muted);font-family:var(--mono);direction:ltr}
+.foot{margin-top:22px;color:var(--muted);font-size:13px;line-height:1.7;max-width:70ch}
+.foot a{color:var(--accent)}
+.foot code{font-family:var(--mono);font-size:12px}
+@media (max-width:560px){.masthead h1{font-size:19px}.btn{height:34px;min-width:34px;padding:0 9px}.time{min-width:76px;font-size:12px}}
+</style>
+
+<div class="wrap">
+  <div class="masthead">
+    <h1>سَنَد ٢ ثلاثي الأبعاد</h1><span class="dot"></span>
+    <p>مشهد WebGL حقيقي · دوران بمنظور فعلي · ١٠ مشاهد · ٤٠ ثانية</p>
+  </div>
+
+  <div class="screen">
+    <div class="stage" id="stage">
+      <div class="loading" id="loading">يُحمّل المشهد…</div>
+      <div class="badge" id="badge">لقطات فعلية من سَنَد ٢ · بيانات اصطناعية</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn primary" id="play" aria-label="تشغيل أو إيقاف">⏸</button>
+    <button class="btn" id="prev" aria-label="السابق">⏮</button>
+    <button class="btn" id="next" aria-label="التالي">⏭</button>
+    <span class="time" id="time">0:00 / 0:00</span>
+    <div class="track" id="track" role="slider" aria-label="شريط الزمن" tabindex="0" aria-valuemin="0" aria-valuenow="0" aria-valuemax="100"></div>
+    <button class="btn" id="restart" aria-label="إعادة">⟲</button>
+    <div class="now" id="now"></div>
+  </div>
+
+  <div class="rail" id="rail"></div>
+
+  <p class="foot">
+    كل لقطة هنا سطح مكسوّ داخل مشهد ثلاثي الأبعاد، والدوران بمنظور حقيقي لا إيهام مسطّح. حرّك المؤشر فوق المشهد لتغيير زاوية الكاميرا قليلًا.
+    النص مرسوم داخل المشهد نفسه فيتحرك معه في العمق. المصدر:
+    <a href="https://github.com/whyKaiser/sanad-motion" target="_blank" rel="noopener">whyKaiser/sanad-motion</a> ·
+    النسخة الحية: <a href="https://sanad-v2.songokualshareef.workers.dev" target="_blank" rel="noopener">sanad-v2</a>
+  </p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var SCENES = [
+    {id:"hook", dur:4.2, theme:"dark", kind:"cloud",
+     pages:["p11","p53","p67","p16"],
+     lines:["الوثيقة الناقصة","توقف المعاملة."], hi:1, textPos:"center"},
+
+    {id:"hero", dur:4.4, theme:"light", page:"p11",
+     rot:[-0.34,-0.07], pos:[[0,-0.35,-1.2],[0,-0.30,0]], scale:[0.98,1.0],
+     lines:["ومن مساحة واحدة،","تدير ملف الوافد كله."], hi:1, textPos:"top"},
+
+    {id:"kpi", dur:3.8, theme:"light", page:"p11", crop:[0.02,0.30,0.78,0.56],
+     rot:[0.22,0.05], pos:[[0.35,0,-0.6],[0.30,0.02,0.35]], scale:[1,1],
+     lines:["أربعة أرقام","تحدد عمل اليوم."], hi:1, textPos:"left"},
+
+    {id:"ocr", dur:4.0, theme:"light", page:"p16",
+     rot:[-0.40,-0.10], pos:[[-0.30,0,-0.8],[-0.28,0,0.2]], scale:[1,1],
+     lines:["أرفق النسخة،","وتُقرأ خاناتها فورًا."], hi:1, textPos:"right"},
+
+    {id:"journal", dur:4.2, theme:"dark", page:"p53", crop:[0,0.18,0.80,0.72],
+     rot:[0.36,0.08], pos:[[0.34,0,-0.7],[0.28,0,0.3]], scale:[1,1],
+     lines:["كل تعديل موقّع.","السجل لا يتغيّر بصمت."], hi:0, textPos:"left"},
+
+    {id:"diff", dur:3.8, theme:"light", page:"p54", crop:[0.05,0.22,0.85,0.74],
+     rot:[-0.26,-0.04], pos:[[0,-0.28,0.3],[0,-0.24,-0.1]], scale:[1.02,0.98],
+     lines:["قبل وبعد،","ومن عدّل، ولماذا."], hi:1, textPos:"top"},
+
+    {id:"forecast", dur:4.2, theme:"light", page:"p67", crop:[0.02,0.26,0.76,0.86],
+     rot:[0.30,0.06], pos:[[0.33,0,-0.7],[0.28,0,0.35]], scale:[1,1],
+     lines:["توقّع الإقبال","أربعًا وعشرين ساعة."], hi:1, textPos:"left"},
+
+    {id:"numbers", dur:4.2, theme:"accent", kind:"type",
+     lines:["٨٦٫٩٢ مقابل ٩٣٫٩٧"], hi:0, textPos:"center",
+     sub:"تحسّن ٧٫٥٪ في متوسط الخطأ على ٦٬٧٧٣ ساعة اختبار — لا «نسبة دقة»"},
+
+    {id:"roles", dur:3.8, theme:"light", page:"p81", crop:[0.02,0.20,0.80,0.78],
+     rot:[-0.36,-0.08], pos:[[-0.32,0,-0.6],[-0.28,0,0.3]], scale:[1,1],
+     lines:["أربعة أدوار،","والتحقق على الخادم."], hi:1, textPos:"right"},
+
+    {id:"end", dur:4.0, theme:"light", kind:"type",
+     lines:["سَنَد ٢"], hi:0, textPos:"center",
+     sub:"sanad-v2.songokualshareef.workers.dev · نموذج أولي ببيانات اصطناعية"}
+  ];
+
+  var THEMES = {
+    light:{bg:0xF2F5F2, fog:0xF2F5F2, text:"#152318", hi:"#0E7A5F", sub:"#5A6B5E", shadow:0.16},
+    dark:{bg:0x081C16, fog:0x061511, text:"#F1F7F3", hi:"#3FBF97", sub:"#9FB8AD", shadow:0.5},
+    accent:{bg:0x0A3A2E, fog:0x06201A, text:"#F1F7F3", hi:"#7FE3C1", sub:"#A8D7C6", shadow:0.5}
+  };
+
+  var stage = document.getElementById("stage");
+  var loadingEl = document.getElementById("loading");
+  var badge = document.getElementById("badge");
+  var timeEl = document.getElementById("time");
+  var trackEl = document.getElementById("track");
+  var railEl = document.getElementById("rail");
+  var nowEl = document.getElementById("now");
+  var playBtn = document.getElementById("play");
+
+  var total = 0, starts = [];
+  SCENES.forEach(function(s){ starts.push(total); total += s.dur; });
+
+  function pad(n){ return (n<10?"0":"")+n; }
+  function fmt(s){ s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+":"+(s%60<10?"0":"")+(s%60); }
+  function easeOut(t){ return 1-Math.pow(1-t,3); }
+  function easeInOut(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  function clamp01(v){ return v<0?0:(v>1?1:v); }
+  function mix(a,b,t){ return a+(b-a)*t; }
+
+  /* ---------- three.js scene ---------- */
+  var renderer, scene, camera, group, ambient, key;
+  var cards = {}, texts = [], shadowTex = null;
+
+  function roundedTexture(img, crop, radius){
+    var sx = crop ? crop[0]*img.width : 0;
+    var sy = crop ? crop[1]*img.height : 0;
+    var sw = crop ? (crop[2]-crop[0])*img.width : img.width;
+    var sh = crop ? (crop[3]-crop[1])*img.height : img.height;
+    var c = document.createElement("canvas");
+    c.width = Math.round(sw); c.height = Math.round(sh);
+    var g = c.getContext("2d");
+    var r = radius || Math.round(Math.min(sw,sh)*0.035);
+    g.save();
+    g.beginPath();
+    if (g.roundRect) g.roundRect(0,0,c.width,c.height,r);
+    else g.rect(0,0,c.width,c.height);
+    g.closePath(); g.clip();
+    g.drawImage(img, sx, sy, sw, sh, 0, 0, c.width, c.height);
+    g.restore();
+    g.strokeStyle = "rgba(255,255,255,.34)";
+    g.lineWidth = 3;
+    g.beginPath();
+    if (g.roundRect) g.roundRect(1.5,1.5,c.width-3,c.height-3,r);
+    else g.rect(1.5,1.5,c.width-3,c.height-3);
+    g.stroke();
+    var tex = new THREE.CanvasTexture(c);
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    tex.minFilter = THREE.LinearMipMapLinearFilter;
+    tex.needsUpdate = true;
+    return {tex:tex, aspect:c.width/c.height};
+  }
+
+  function softShadowTexture(){
+    if (shadowTex) return shadowTex;
+    var c = document.createElement("canvas");
+    c.width = c.height = 256;
+    var g = c.getContext("2d");
+    var grd = g.createRadialGradient(128,128,10,128,128,126);
+    grd.addColorStop(0,"rgba(4,18,14,.95)");
+    grd.addColorStop(0.55,"rgba(4,18,14,.45)");
+    grd.addColorStop(1,"rgba(4,18,14,0)");
+    g.fillStyle = grd; g.fillRect(0,0,256,256);
+    shadowTex = new THREE.CanvasTexture(c);
+    return shadowTex;
+  }
+
+  function textTexture(lines, opts){
+    /* Arabic shapes correctly in canvas2D, so the type lives in the scene too */
+    var size = opts.size || 96;
+    var pxW = opts.pxW || 2048, pxH = opts.pxH || 1024;
+    var c = document.createElement("canvas");
+    c.width = pxW; c.height = pxH;
+    var g = c.getContext("2d");
+    g.direction = "rtl";
+    g.textAlign = "center";
+    g.textBaseline = "middle";
+    var lh = size*1.35;
+    var startY = pxH/2 - ((lines.length-1)*lh)/2;
+    g.font = "600 "+size+"px 'IBM Plex Sans Arabic', sans-serif";
+    var fit = size;
+    lines.forEach(function(ln){
+      var probe = size;
+      g.font = "600 "+probe+"px 'IBM Plex Sans Arabic', sans-serif";
+      while (probe > 28 && g.measureText(ln).width > pxW*0.90){
+        probe -= 4;
+        g.font = "600 "+probe+"px 'IBM Plex Sans Arabic', sans-serif";
+      }
+      if (probe < fit) fit = probe;
+    });
+    size = fit;
+    lh = size*1.35;
+    startY = pxH/2 - ((lines.length-1)*lh)/2;
+    lines.forEach(function(ln,i){
+      g.font = "600 "+size+"px 'IBM Plex Sans Arabic', sans-serif";
+      g.fillStyle = (i===opts.hi) ? opts.hiColor : opts.color;
+      if (opts.glow){
+        g.shadowColor = "rgba(0,0,0,.35)"; g.shadowBlur = 26; g.shadowOffsetY = 4;
+      }
+      g.fillText(ln, pxW/2, startY + i*lh);
+      g.shadowBlur = 0; g.shadowOffsetY = 0;
+    });
+    if (opts.sub){
+      g.font = "400 "+Math.round(size*0.34)+"px 'IBM Plex Sans Arabic', sans-serif";
+      g.fillStyle = opts.subColor;
+      g.fillText(opts.sub, pxW/2, startY + lines.length*lh - lh*0.1);
+    }
+    var tex = new THREE.CanvasTexture(c);
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    tex.needsUpdate = true;
+    return tex;
+  }
+
+  function makeCard(texInfo, fit){
+    var maxW = (fit && fit.w) || 5.6, maxH = (fit && fit.h) || 2.9;
+    var w = maxW, h = maxW/texInfo.aspect;
+    if (h > maxH){ h = maxH; w = maxH*texInfo.aspect; }
+    var mat = new THREE.MeshBasicMaterial({map:texInfo.tex, transparent:true, opacity:0});
+    var mesh = new THREE.Mesh(new THREE.PlaneGeometry(w,h,1,1), mat);
+    var sh = new THREE.Mesh(
+      new THREE.PlaneGeometry(w*1.35, h*1.5),
+      new THREE.MeshBasicMaterial({map:softShadowTexture(), transparent:true, opacity:0, depthWrite:false})
+    );
+    sh.position.set(0,-0.18,-0.06);
+    var holder = new THREE.Object3D();
+    holder.add(sh); holder.add(mesh);
+    holder.userData = {mesh:mesh, shadow:sh, w:w, h:h};
+    return holder;
+  }
+
+  function makeTextPlane(tex, width, aspect){
+    var mat = new THREE.MeshBasicMaterial({map:tex, transparent:true, opacity:0, depthTest:false});
+    var m = new THREE.Mesh(new THREE.PlaneGeometry(width, width/(aspect || 2)), mat);
+    m.renderOrder = 10;
+    return m;
+  }
+
+  var built = false, images = {}, sceneObjects = [];
+
+  function buildAll(){
+    SCENES.forEach(function(sc, i){
+      var obj = {scene:sc, card:null, text:null};
+      if (sc.kind === "cloud"){
+        obj.cloud = sc.pages.map(function(p, k){
+          var info = roundedTexture(images[p], null, 26);
+          var holder = makeCard(info, {w:3.0, h:1.7});
+          var spots = [[-2.5,1.05,-1.6],[2.35,1.25,-2.6],[2.7,-1.0,-1.2],[-2.2,-1.15,-2.2]];
+          holder.position.set(spots[k][0], spots[k][1], spots[k][2]);
+          holder.scale.setScalar(1.05 - k*0.06);
+          holder.rotation.y = (k%2 ? 0.42 : -0.42);
+          holder.rotation.x = (k%2 ? -0.07 : 0.07);
+          group.add(holder);
+          return holder;
+        });
+      } else if (sc.page){
+        var info2 = roundedTexture(images[sc.page], sc.crop, 26);
+        var fit = (sc.textPos === "top")
+          ? {w:6.4, h:2.50}
+          : {w:4.3, h:2.35};
+        obj.card = makeCard(info2, fit);
+        group.add(obj.card);
+      }
+      var th = THEMES[sc.theme];
+      var side = (sc.textPos === "left" || sc.textPos === "right");
+      var isType = sc.kind === "type";
+      var box = isType ? {pxW:2048, pxH:760, w:7.0}
+                       : (side ? {pxW:1200, pxH:1200, w:2.9}
+                               : {pxW:2048, pxH:470, w:6.4});
+      var tex = textTexture(sc.lines, {
+        pxW: box.pxW, pxH: box.pxH,
+        size: isType ? 150 : (side ? 150 : 132),
+        hi: sc.hi, color: th.text, hiColor: th.hi, subColor: th.sub,
+        sub: sc.sub, glow: sc.theme !== "light"
+      });
+      obj.text = makeTextPlane(tex, box.w, box.pxW / box.pxH);
+      group.add(obj.text);
+      sceneObjects.push(obj);
+    });
+    built = true;
+  }
+
+  function init(){
+    renderer = new THREE.WebGLRenderer({antialias:true, alpha:false});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(stage.clientWidth, stage.clientHeight, false);
+    stage.appendChild(renderer.domElement);
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(THEMES.dark.bg);
+    scene.fog = new THREE.Fog(THEMES.dark.fog, 7, 18);
+    camera = new THREE.PerspectiveCamera(36, 16/9, 0.1, 100);
+    camera.position.set(0,0,7.2);
+    group = new THREE.Object3D();
+    scene.add(group);
+    ambient = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(ambient);
+    window.addEventListener("resize", onResize);
+    onResize();
+  }
+
+  function onResize(){
+    if (!renderer) return;
+    var w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+  }
+
+  /* ---------- timeline ---------- */
+  var t = 0, cur = -1, playing = true, last = 0, px = 0, py = 0;
+
+  function sceneAt(time){ for (var i=SCENES.length-1;i>=0;i--) if (time>=starts[i]) return i; return 0; }
+
+  function applyTheme(sc){
+    var th = THEMES[sc.theme];
+    scene.background.setHex(th.bg);
+    scene.fog.color.setHex(th.fog);
+    badge.classList.toggle("light", sc.theme === "light");
+  }
+
+  function layout(){
+    /* hide everything, then place the active scene */
+    sceneObjects.forEach(function(o){
+      if (o.card) { o.card.userData.mesh.material.opacity = 0; o.card.userData.shadow.material.opacity = 0; o.card.visible = false; }
+      if (o.cloud) o.cloud.forEach(function(c){ c.visible = false; });
+      if (o.text) { o.text.material.opacity = 0; o.text.visible = false; }
+    });
+  }
+
+  function frame(now){
+    if (!last) last = now;
+    var dt = Math.min(0.25,(now-last)/1000); last = now;
+    if (playing && built){
+      t += dt;
+      if (t >= total){ t = total - 0.01; setPlaying(false); }
+    }
+    if (built) draw();
+    requestAnimationFrame(frame);
+  }
+
+  function draw(){
+    var i = sceneAt(t);
+    if (i !== cur){ cur = i; applyTheme(SCENES[i]); onSceneChange(i); }
+    layout();
+    var sc = SCENES[i], obj = sceneObjects[i];
+    var lt = t - starts[i];
+    var p = clamp01(lt / sc.dur);
+    var e = easeOut(clamp01(lt / (sc.dur*0.85)));
+    var fadeIn = clamp01(lt/0.45);
+    var fadeOut = clamp01((sc.dur - lt)/0.4);
+    var a = Math.min(fadeIn, fadeOut);
+    var th = THEMES[sc.theme];
+
+    if (obj.cloud){
+      obj.cloud.forEach(function(c,k){
+        c.visible = true;
+        var ca = Math.min(clamp01((lt - k*0.16)/0.6), fadeOut);
+        c.userData.mesh.material.opacity = ca;
+        c.userData.shadow.material.opacity = ca*th.shadow;
+        var drift = Math.sin((lt + k*1.7)*0.55)*0.08;
+        c.position.y += 0;
+        c.rotation.y = (k%2 ? 0.42 : -0.42) + drift*0.25;
+        c.position.z = (-1.2 - k*0.35) + e*0.45 + drift*0.2;
+      });
+    }
+    if (obj.card){
+      var card = obj.card;
+      card.visible = true;
+      card.rotation.y = mix(sc.rot[0], sc.rot[1], e);
+      card.rotation.x = mix(0.05, 0.0, e);
+      var p0 = sc.pos[0], p1 = sc.pos[1];
+      var offX = (sc.textPos === "left") ? 1.50 : (sc.textPos === "right" ? -1.50 : 0);
+      var offY = (sc.textPos === "top") ? -0.62 : 0;
+      card.position.set(mix(p0[0],p1[0],e) + offX,
+                        mix(p0[1],p1[1],e) + offY,
+                        mix(p0[2],p1[2],e));
+      var s = mix(sc.scale[0], sc.scale[1], e);
+      card.scale.setScalar(s);
+      card.userData.mesh.material.opacity = a;
+      card.userData.shadow.material.opacity = a*th.shadow;
+    }
+    if (obj.text){
+      var tx = obj.text;
+      tx.visible = true;
+      var ta = Math.min(clamp01((lt-0.18)/0.5), fadeOut);
+      tx.material.opacity = ta;
+      var rise = (1-easeOut(clamp01((lt-0.18)/0.7)))*0.22;
+      var pos = sc.textPos;
+      if (pos === "top") tx.position.set(0, 1.08 + rise, 1.6);
+      else if (pos === "left") tx.position.set(-1.85, 0.08 + rise, 1.5);
+      else if (pos === "right") tx.position.set(1.85, 0.08 + rise, 1.5);
+      else tx.position.set(0, 0.1 + rise, 1.2);
+      tx.rotation.y = (pos === "left" ? 0.06 : pos === "right" ? -0.06 : 0);
+      tx.scale.setScalar(mix(1.03, 1.0, easeOut(clamp01(lt/0.8))));
+    }
+
+    /* pointer parallax keeps the camera alive between beats */
+    camera.position.x += ((px*0.42) - camera.position.x) * 0.05;
+    camera.position.y += ((py*0.26) - camera.position.y) * 0.05;
+    camera.position.z = 7.2 - easeInOut(p)*0.32;
+    camera.lookAt(0,0,0);
+    renderer.render(scene, camera);
+    paint();
+  }
+
+  /* ---------- player chrome ---------- */
+  var segs = SCENES.map(function(s){
+    var g = document.createElement("div");
+    g.className = "seg"; g.style.setProperty("--f", String(s.dur));
+    g.innerHTML = "<span></span>"; trackEl.appendChild(g); return g;
+  });
+  var NAV = ["الافتتاحية","مساحة العمل","المؤشرات","قراءة الوثيقة","السجل الموقّع","قبل وبعد","التوقع","الأرقام","الأدوار","الخاتمة"];
+  var jumps = SCENES.map(function(s,i){
+    var b = document.createElement("button");
+    b.className = "jump"; b.type = "button";
+    b.innerHTML = '<span class="t">'+NAV[i]+'</span><span class="m">'+pad(i+1)+' · '+fmt(starts[i])+'</span>';
+    b.addEventListener("click", function(){ seek(starts[i]+0.01); if(!playing) setPlaying(true); });
+    railEl.appendChild(b); return b;
+  });
+
+  function onSceneChange(i){
+    nowEl.innerHTML = "<b>"+NAV[i]+"</b> · مشهد "+pad(i+1)+" من "+SCENES.length;
+    jumps.forEach(function(b,k){ b.setAttribute("aria-current", k===i?"true":"false"); });
+  }
+  function paint(){
+    var i = cur<0?0:cur, lt = t-starts[i];
+    for (var k=0;k<segs.length;k++){
+      var v = k<i?1:(k>i?0:clamp01(lt/SCENES[i].dur));
+      segs[k].style.setProperty("--p", v.toFixed(3));
+    }
+    timeEl.textContent = fmt(t)+" / "+fmt(total);
+    trackEl.setAttribute("aria-valuenow", Math.round(t/total*100));
+  }
+  function seek(time){ t = Math.max(0, Math.min(total-0.02, time)); cur = -1; }
+  function setPlaying(on){
+    playing = on;
+    playBtn.textContent = on ? "⏸" : "▶";
+    playBtn.setAttribute("aria-label", on ? "إيقاف مؤقت" : "تشغيل");
+  }
+
+  playBtn.addEventListener("click", function(){ setPlaying(!playing); });
+  document.getElementById("restart").addEventListener("click", function(){ seek(0); setPlaying(true); });
+  document.getElementById("prev").addEventListener("click", function(){
+    var i = sceneAt(t); if (t-starts[i] < 1.2 && i > 0) i--; seek(starts[i]+0.01);
+  });
+  document.getElementById("next").addEventListener("click", function(){
+    var i = sceneAt(t); if (i < SCENES.length-1) seek(starts[i+1]+0.01);
+  });
+  trackEl.addEventListener("click", function(ev){
+    var r = trackEl.getBoundingClientRect();
+    seek((1 - clamp01((ev.clientX-r.left)/r.width)) * total);
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.target && /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+    if (e.code === "Space"){ setPlaying(!playing); e.preventDefault(); }
+  });
+  stage.addEventListener("pointermove", function(e){
+    var r = stage.getBoundingClientRect();
+    px = ((e.clientX - r.left)/r.width - 0.5) * 2;
+    py = -((e.clientY - r.top)/r.height - 0.5) * 2;
+  });
+  stage.addEventListener("pointerleave", function(){ px = 0; py = 0; });
+
+  /* ---------- boot ---------- */
+  var PAGES = ["p11","p16","p53","p54","p67","p81"];
+  function loadImages(done){
+    var left = PAGES.length;
+    PAGES.forEach(function(p){
+      var im = new Image();
+      im.onload = function(){ images[p] = im; if (--left === 0) done(); };
+      im.onerror = function(){ images[p] = im; if (--left === 0) done(); };
+      im.src = "ui/"+p+".webp";
+    });
+  }
+
+  function start(){
+    init();
+    loadImages(function(){
+      var go = function(){
+        buildAll();
+        loadingEl.classList.add("gone");
+        onSceneChange(0);
+        setPlaying(true);
+        requestAnimationFrame(frame);
+      };
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(go).catch(go);
+      else go();
+    });
+  }
+
+  if (window.THREE) start();
+  else { loadingEl.textContent = "تعذّر تحميل محرك العرض"; }
+})();
+</script>
